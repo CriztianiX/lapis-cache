@@ -1,1 +1,4 @@
 
+.tup
+test/logs
+test/nginx.conf.compiled

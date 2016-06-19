@@ -1,3 +1,6 @@
+local request = require("lapis.spec.server").request
+local use_test_server = require("lapis.spec").use_test_server
+
 describe("Lapis cache engines", function()
   local cache
   
@@ -31,7 +34,21 @@ describe("Lapis cache engines", function()
     end)
   end)
 
-  describe("redis engine", function()
+  describe("redis resty engine", function()
+    use_test_server()
+
+    it("should write to cache", function()
+      local status, body, headers = request("/redis/write?key=redis_key&value=redis_value")
+      assert.same(status, 200)
+    end)
+
+    it("should read from cache", function()
+      local status, body, headers = request("/redis/read?key=redis_key")
+      assert.same(status, 200)
+    end)
+  end)
+
+  describe("redis default engine", function()
     it("should write to cache", function()
       assert.True(cache:write("my_key", {
         cached = true
