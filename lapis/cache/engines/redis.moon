@@ -14,6 +14,8 @@ class RestyEngine extends EngineCache
   @read: (key) =>
     conn = connection!
     value = conn\get key
+    unless value
+      return nil
     @decode value
 
   @write: (key, value) =>
@@ -32,6 +34,8 @@ class DefaultEngine extends EngineCache
   @read: (key) =>
     conn = connection!
     value = conn\get key
+    unless value
+      return nil
     @decode value
 
   @write: (key, value) =>

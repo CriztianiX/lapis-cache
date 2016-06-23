@@ -20,17 +20,28 @@ load_engine = (cfg) ->
 return class Cache
   @config: (configuration = "default") =>
     assert_config configuration
+
   @read: (key, configuration = "default") =>
+    unless key
+      error "missing key"
     cfg = @config configuration
     engine = load_engine cfg
     engine\read(key)
+
+  @remember: (key, fn, configuration = "default") =>
+    res = @read key, configuration
+    fcache = true
+    unless res
+      res = fn!
+      fcache = false
+      @write key, res, configuration
+    res, fcache
 
   @write: (key, value, configuration = "default") =>
     unless key
       error "missing key"
     unless value
       error "missing value"
-
     cfg = @config configuration
     engine = load_engine cfg
     engine\write(key, value)

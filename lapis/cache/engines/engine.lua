@@ -1,9 +1,10 @@
 local util = require("lapis.util")
 local EngineCache
 do
+  local _class_0
   local _base_0 = { }
   _base_0.__index = _base_0
-  local _class_0 = setmetatable({
+  _class_0 = setmetatable({
     __init = function() end,
     __base = _base_0,
     __name = "EngineCache"
@@ -19,19 +20,22 @@ do
   local self = _class_0
   self.encode = function(self, value)
     if not (value) then
-      error("value missing")
+      error("encode, value missing")
     end
     return util.to_json(value)
   end
   self.decode = function(self, value)
     if not (value) then
-      error("value missing")
+      error("decode, value missing")
     end
     return util.from_json(value)
   end
   self.set_config = function(self, config)
     self.config = config
     return self
+  end
+  self.read = function(self, key)
+    return error("read is delegated to engine")
   end
   self.write = function(self, key, value)
     return error("write is delegated to engine")

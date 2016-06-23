@@ -24,9 +24,10 @@ load_engine = function(cfg)
 end
 local Cache
 do
+  local _class_0
   local _base_0 = { }
   _base_0.__index = _base_0
-  local _class_0 = setmetatable({
+  _class_0 = setmetatable({
     __init = function() end,
     __base = _base_0,
     __name = "Cache"
@@ -50,9 +51,25 @@ do
     if configuration == nil then
       configuration = "default"
     end
+    if not (key) then
+      error("missing key")
+    end
     local cfg = self:config(configuration)
     local engine = load_engine(cfg)
     return engine:read(key)
+  end
+  self.remember = function(self, key, fn, configuration)
+    if configuration == nil then
+      configuration = "default"
+    end
+    local res = self:read(key, configuration)
+    local fcache = true
+    if not (res) then
+      res = fn()
+      fcache = false
+      self:write(key, res, configuration)
+    end
+    return res, fcache
   end
   self.write = function(self, key, value, configuration)
     if configuration == nil then
