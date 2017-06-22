@@ -14,16 +14,26 @@ class RestyEngine extends EngineCache
   @read: (key) =>
     conn = connection!
     value = conn\get key
+
     unless value
       return nil
+
+    if value == ngx.null
+      return nil
+    
     @decode value
 
   @write: (key, value) =>
     conn = connection!
-    ans, err = conn\set key, @encode(value)
+    local ans, err
+    if @config.duration
+      ans, err = conn\setex key, @config.duration, @encode(value)
+    else
+      ans, err = conn\set key, @encode(value)
 
     unless ans
       error("failed to set")
+      
     return true
 
 class DefaultEngine extends EngineCache
