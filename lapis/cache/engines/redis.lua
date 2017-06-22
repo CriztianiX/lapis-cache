@@ -51,11 +51,19 @@ do
     if not (value) then
       return nil
     end
+    if value == ngx.null then
+      return nil
+    end
     return self:decode(value)
   end
   self.write = function(self, key, value)
     local conn = connection()
-    local ans, err = conn:set(key, self:encode(value))
+    local ans, err
+    if self.config.duration then
+      ans, err = conn:setex(key, self.config.duration, self:encode(value))
+    else
+      ans, err = conn:set(key, self:encode(value))
+    end
     if not (ans) then
       error("failed to set")
     end
