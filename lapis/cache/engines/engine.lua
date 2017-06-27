@@ -34,6 +34,9 @@ do
     self.config = config
     return self
   end
+  self.delete = function(self, key)
+    return error("delete is delegated to engine")
+  end
   self.read = function(self, key)
     return error("read is delegated to engine")
   end

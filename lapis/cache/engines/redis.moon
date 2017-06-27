@@ -11,6 +11,10 @@ class RestyEngine extends EngineCache
       return
     red
 
+  @delete: (key) =>
+    conn = connection!
+    return conn\del key
+
   @read: (key) =>
     conn = connection!
     value = conn\get key
@@ -40,6 +44,10 @@ class DefaultEngine extends EngineCache
   connection = ->
     redis = require("redis")
     redis.connect(@config.host or "127.0.0.1", @config.port or 6379)
+
+  @delete: (key) =>
+    conn = connection!
+    return conn\del key
 
   @read: (key) =>
     conn = connection!

@@ -15,6 +15,9 @@ return class EngineCache
     @config = config
     return @
 
+  @delete:(key) =>
+    error("delete is delegated to engine")
+
   @read:(key) =>
     error("read is delegated to engine")
   
