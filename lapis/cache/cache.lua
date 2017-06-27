@@ -47,6 +47,17 @@ do
     end
     return assert_config(configuration)
   end
+  self.delete = function(self, key, configuration)
+    if configuration == nil then
+      configuration = "default"
+    end
+    if not (key) then
+      error("missing key")
+    end
+    local cfg = self:config(configuration)
+    local engine = load_engine(cfg)
+    return engine:delete(key)
+  end
   self.read = function(self, key, configuration)
     if configuration == nil then
       configuration = "default"

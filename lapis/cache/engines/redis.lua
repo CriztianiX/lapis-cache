@@ -45,6 +45,10 @@ do
     end
     return red
   end
+  self.delete = function(self, key)
+    local conn = connection()
+    return conn:del(key)
+  end
   self.read = function(self, key)
     local conn = connection()
     local value = conn:get(key)
@@ -112,6 +116,10 @@ do
   connection = function()
     local redis = require("redis")
     return redis.connect(self.config.host or "127.0.0.1", self.config.port or 6379)
+  end
+  self.delete = function(self, key)
+    local conn = connection()
+    return conn:del(key)
   end
   self.read = function(self, key)
     local conn = connection()

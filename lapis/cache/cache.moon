@@ -21,6 +21,13 @@ return class Cache
   @config: (configuration = "default") =>
     assert_config configuration
 
+  @delete: (key, configuration = "default") =>
+    unless key
+      error "missing key"
+    cfg = @config configuration
+    engine = load_engine cfg
+    engine\delete(key)
+
   @read: (key, configuration = "default") =>
     unless key
       error "missing key"
