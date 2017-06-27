@@ -5,7 +5,8 @@ In your config.lua add:
 ```lua
 cache = {
   my_cache = {
-    engine = "redis"
+    engine = "redis",
+    duration = 900 -- or nil never expires
   }
 }
 ```
